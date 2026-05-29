@@ -1,0 +1,93 @@
+{
+  "kind": "collectionType",
+  "collectionName": "power_bi_dashboards",
+  "info": {
+    "singularName": "power-bi-dashboard",
+    "pluralName": "power-bi-dashboards",
+    "displayName": "Power BI Dashboard"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true,
+      "unique": true
+    },
+    "journey": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Pre-Sales",
+        "Sales",
+        "After Sales",
+        "General"
+      ]
+    },
+    "workspace": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Marvel",
+        "Shield"
+      ]
+    },
+    "environment": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Operation",
+        "Development"
+      ]
+    },
+    "frequency": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "Monthly",
+        "Weekly",
+        "Daily",
+        "Ad Hoc"
+      ]
+    },
+    "powerBiUrl": {
+      "type": "string",
+      "required": true
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "isActive": {
+      "type": "boolean",
+      "required": true,
+      "default": true
+    },
+    "objective": {
+      "type": "blocks",
+      "required": true
+    },
+    "businessQuestion": {
+      "type": "blocks"
+    },
+    "dataUsage": {
+      "type": "blocks",
+      "required": true
+    },
+    "pins": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::dashboard-pin.dashboard-pin",
+      "mappedBy": "dashboard"
+    }
+  }
+}

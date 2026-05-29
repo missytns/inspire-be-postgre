@@ -477,6 +477,101 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiDashboardPinDashboardPin
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'dashboard_pins';
+  info: {
+    displayName: 'Dashboard Pin';
+    pluralName: 'dashboard-pins';
+    singularName: 'dashboard-pin';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dashboard: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::power-bi-dashboard.power-bi-dashboard'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::dashboard-pin.dashboard-pin'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiPowerBiDashboardPowerBiDashboard
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'power_bi_dashboards';
+  info: {
+    displayName: 'Power BI Dashboard';
+    pluralName: 'power-bi-dashboards';
+    singularName: 'power-bi-dashboard';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    businessQuestion: Schema.Attribute.Blocks;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dataUsage: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    environment: Schema.Attribute.Enumeration<['Operation', 'Development']> &
+      Schema.Attribute.Required;
+    frequency: Schema.Attribute.Enumeration<
+      ['Monthly', 'Weekly', 'Daily', 'Ad Hoc']
+    > &
+      Schema.Attribute.Required;
+    isActive: Schema.Attribute.Boolean &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<true>;
+    journey: Schema.Attribute.Enumeration<
+      ['Pre-Sales', 'Sales', 'After Sales', 'General']
+    > &
+      Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::power-bi-dashboard.power-bi-dashboard'
+    > &
+      Schema.Attribute.Private;
+    objective: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    pins: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::dashboard-pin.dashboard-pin'
+    >;
+    powerBiUrl: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    thumbnail: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    > &
+      Schema.Attribute.Required;
+    title: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workspace: Schema.Attribute.Enumeration<['Marvel', 'Shield']> &
+      Schema.Attribute.Required;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -933,7 +1028,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -989,6 +1083,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::dashboard-pin.dashboard-pin': ApiDashboardPinDashboardPin;
+      'api::power-bi-dashboard.power-bi-dashboard': ApiPowerBiDashboardPowerBiDashboard;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
